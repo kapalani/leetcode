@@ -1,7 +1,7 @@
 public class PalindromeNumber{
 
     public static void main(String []args){
-        boolean result = isPalindrome(-1221);
+        boolean result = isPalindrome(1000021);
         System.out.println(result);
     }
      
@@ -14,29 +14,29 @@ public class PalindromeNumber{
         int right = 0;
         
         int tmp = x;
-        int ct = 0;
+        int ct = 1;
         
-        while(tmp!=0){
-            ct +=1;
-            tmp = tmp/10;
+        while(tmp/ct>=10){
+            ct *= 10;
         }
         
         while(x!=0){
             
             right = x%10;
-            if(ct>1)
-                left = x/(int)(Math.pow(10, (ct-1)));
-            else
+            left = x/ct;
+            
+            if(x<10 && left==right)
                 return true;
-    
-            if(left!=right)
+            else if(left!=right)
                 return false;
+                
             x = x/10;
-            if(ct>2)
-                x = x%(int)(Math.pow(10, (ct-2)));
-            ct -= 2;
+            x = x%(ct/10);
+    
+            ct /= 100;
         }
         
         return true;
     }
 }
+
