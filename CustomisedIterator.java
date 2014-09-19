@@ -54,7 +54,7 @@ class CustomIterator<T> implements Iterator<T>{
         return null;
     }
     
-    public Iterator<T> populateInner(){
+    private Iterator<T> populateInner(){
         if(outer.hasNext()){
             return inner = outer.next().iterator();
         }else{
