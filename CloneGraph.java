@@ -7,52 +7,36 @@ import java.util.Queue;
 
 public class CloneGraph {
 	public static void main(String[] args){
-		UndirectedGraphNode root = new UndirectedGraphNode(0);
-		root.neighbors.add(new UndirectedGraphNode(1));
-		root.neighbors.add(new UndirectedGraphNode(2));
-
-		UndirectedGraphNode head = cloneGraph(root);
 		
-		Queue<UndirectedGraphNode> queue = new LinkedList<UndirectedGraphNode>();
-		queue.offer(head);
-		while(!queue.isEmpty()){
-			UndirectedGraphNode tmp = queue.poll();
-			System.out.println(tmp.label);
-			for(UndirectedGraphNode node:tmp.neighbors){
-				queue.offer(node);
-			}
-		}
 	}
 	
 	public static UndirectedGraphNode cloneGraph(UndirectedGraphNode node) {
+        	if (node == null) return null;
         
-		if(node==null)
-			return null;
-		
-		Map<UndirectedGraphNode, UndirectedGraphNode> map = new HashMap<UndirectedGraphNode, UndirectedGraphNode>();
-        Queue<UndirectedGraphNode> queue = new LinkedList<UndirectedGraphNode>();
+                Map<UndirectedGraphNode, UndirectedGraphNode> map = new HashMap<UndirectedGraphNode, UndirectedGraphNode>();
+        	Queue<UndirectedGraphNode> queue = new LinkedList<UndirectedGraphNode>();
         
-        queue.offer(node);
-        UndirectedGraphNode copy = new UndirectedGraphNode(node.label);
-        map.put(node, copy);
+        	UndirectedGraphNode firstCopy = new UndirectedGraphNode(node.label);
+        	queue.offer(node);
+        	map.put(node, firstCopy);
         
-        while(!queue.isEmpty()){
-        	UndirectedGraphNode tmp = queue.poll();
-        	for(int i=0;i<tmp.neighbors.size();i++){
-        		UndirectedGraphNode neighbor = tmp.neighbors.get(i);
-        		if(!map.containsKey(neighbor)){
-        			UndirectedGraphNode neighborCopy = new UndirectedGraphNode(neighbor.label);
-        			map.get(tmp).neighbors.add(neighborCopy);
-        			map.put(neighbor, neighborCopy);
-        			queue.offer(neighbor);
-        		}else{
-        			map.get(tmp).neighbors.add(neighbor);
-        		}
+        	while(!queue.isEmpty()) {
+        		UndirectedGraphNode current = queue.poll();
+        	
+        		for (UndirectedGraphNode neighbour:current.neighbors) {
+        			if (!map.containsKey(neighbour)) {
+        				UndirectedGraphNode copy = new UndirectedGraphNode(neighbour.label);
+        				queue.add(neighbour);
+        				map.put(neighbour, copy);
+        				map.get(current).neighbors.add(copy);
+        			} else {
+        				map.get(current).neighbors.add(map.get(neighbour));
+        			}
+        		}		
         	}
-        }
         
-        return copy;
-    }
+        	return firstCopy;
+    	}
 }
 
 class UndirectedGraphNode {
